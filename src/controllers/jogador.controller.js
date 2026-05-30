@@ -12,14 +12,34 @@ class Jogador {
 }
 
 criarJogador = (req, res) => {
-  const { nome, posicao, time } = req.body;
+  const dadosJogadores = req.body;
 
-  const jogador = new Jogador(nome, posicao, time);
+  // verifica se veio array
+  if (!Array.isArray(dadosJogadores)) {
+    return res.status(400).json({
+      mensagem: "Envie um array de jogadores.",
+    });
+  }
 
-  jogadores.push(jogador);
-  req.timeExistente.jogadores.push(jogador);
+  const jogadoresCriados = [];
 
-  return res.status(201).json(jogador);
+  for (const dados of dadosJogadores) {
+    const { nome, posicao, time } = dados;
+
+    const jogador = new Jogador(nome, posicao, time);
+
+    jogadores.push(jogador);
+
+    req.timeExistente.jogadores.push(jogador);
+
+    jogadoresCriados.push(jogador);
+  }
+
+  return res.status(201).json({
+    mensagem: "Jogadores criados com sucesso.",
+
+    jogadores: jogadoresCriados,
+  });
 };
 
 editarJogador = (req, res) => {

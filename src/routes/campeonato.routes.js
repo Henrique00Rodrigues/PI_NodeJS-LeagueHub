@@ -5,6 +5,7 @@ const {
   deletarCampeonato,
   getCampeonato,
   editarCampeonato,
+  registrarResultadoPartida,
 } = require("../controllers/campeonato.controller");
 //routes
 //middlewares
@@ -22,5 +23,11 @@ router.post("/campeonatos", validarCriacaoCampeonato, criarCampeonato);
 router.put("/campeonatos/:id", validarEdicaoCampeonato, editarCampeonato);
 
 router.delete("/campeonatos/:id", validarRemocaoCampeonato, deletarCampeonato);
+
+router.put(
+  "/campeonatos/:campeonatoId/partidas/:partidaId/resultado",
+  validarBuscaCampeonato,
+  registrarResultadoPartida,
+);
 
 module.exports = router;

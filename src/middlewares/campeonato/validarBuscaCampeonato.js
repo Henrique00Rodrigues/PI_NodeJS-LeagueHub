@@ -1,7 +1,7 @@
 const { campeonatos } = require("../../controllers/campeonato.controller");
 
 module.exports = (req, res, next) => {
-  const id = +req.params.id;
+  const id = +(req.params.id || req.params.campeonatoId);
 
   const campeonato = campeonatos.find((c) => c.id === id);
 

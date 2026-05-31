@@ -2,10 +2,10 @@ class PartidaService {
   constructor() {
     this.idPartidaAtual = 1;
   }
-
+  //Função que cria uma partida. Será muito usada no arquivo de campeonato.service
   criarPartida(fase, time1 = null, time2 = null) {
     return {
-      id: this.idPartidaAtual++,
+      id: this.idPartidaAtual++, //incrementação do id
 
       fase,
 
@@ -27,11 +27,12 @@ class PartidaService {
 
   registrarGolsDoTime(timeCompleto, golsNormalizados, listaDestino) {
     for (const gol of golsNormalizados) {
+      //Preferi usar for...of ao invés de forEach, por conta de praticidade e evitar criar funções internas (que no caso seriam callbacks.) =)
       const jogador = timeCompleto.jogadores.find(
-        (j) => j.id === Number(gol.jogadorId),
+        (j) => j.id === +gol.jogadorId,
       );
 
-      jogador.gols += 1;
+      jogador.gols += 1; //adiciona um gol ao jogador que fez o gol.
 
       listaDestino.push({
         jogadorId: jogador.id,

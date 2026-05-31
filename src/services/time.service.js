@@ -22,7 +22,7 @@ class TimeService {
     const time = {
       id: this.idAtual++, //Sobe 1 no id, ná próxima fica 2, depois 3, 4, 5...
       nome,
-      jogadores: [],
+      jogadores: [], //Jogadores do time, que no caso estão começando sem jogadores, mas pretendo mudá-lo.
       status: "A decidir...",
     };
 
@@ -30,7 +30,7 @@ class TimeService {
 
     return time;
   }
-
+  //Função de edição de times
   editarTime(time, dados) {
     time.nome = dados.nome ?? time.nome; //O operador de coalecencia nula está sendo usado para caso o nome fornecido seja nulo, ele continua mantendo o valor antigo.
     time.status = dados.status ?? time.status; //Mesma coisa aqui

@@ -9,7 +9,7 @@ class JogadorService {
   }
 
   buscarJogadorPorId(id) {
-    return this.jogadores.find((jogador) => jogador.id === Number(id));
+    return this.jogadores.find((jogador) => jogador.id === +id);
   }
   //Função de criação de um único jogador
   criarJogador({ nome, posicao, time }) {
@@ -61,7 +61,7 @@ class JogadorService {
     if (index !== -1) {
       this.jogadores.splice(index, 1);
     }
-
+    //deletando o jogador ao modificar o array.
     timeExistente.jogadores = timeExistente.jogadores.filter(
       (j) => j.id !== jogador.id,
     );

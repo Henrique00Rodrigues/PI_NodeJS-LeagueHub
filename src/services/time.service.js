@@ -22,7 +22,7 @@ class TimeService {
     const time = {
       id: this.idAtual++, //Sobe 1 no id, ná próxima fica 2, depois 3, 4, 5...
       nome,
-      jogadores: [], //Jogadores do time, que no caso estão começando sem jogadores, mas pretendo mudá-lo.
+      jogadores: [], //Jogadores do time, que no caso estão começando sem jogadores.
       status: "A decidir...",
     };
 

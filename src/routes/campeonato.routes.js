@@ -13,6 +13,8 @@ const validarCriacaoCampeonato = require("../middlewares/campeonato/validarCriac
 const validarRemocaoCampeonato = require("../middlewares/campeonato/validarRemocaoCampeonato");
 const validarBuscaCampeonato = require("../middlewares/campeonato/validarBuscaCampeonato");
 const validarEdicaoCampeonato = require("../middlewares/campeonato/validarEdicaoCampeonato");
+const buscarPartida = require("../middlewares/campeonato/buscarPartida");
+const validarResultadoPartida = require("../middlewares/campeonato/validarResultadoPartida");
 //middlewares
 const router = express.Router();
 
@@ -27,6 +29,8 @@ router.delete("/campeonatos/:id", validarRemocaoCampeonato, deletarCampeonato);
 router.put(
   "/campeonatos/:campeonatoId/partidas/:partidaId/resultado",
   validarBuscaCampeonato,
+  buscarPartida,
+  validarResultadoPartida,
   registrarResultadoPartida,
 );
 

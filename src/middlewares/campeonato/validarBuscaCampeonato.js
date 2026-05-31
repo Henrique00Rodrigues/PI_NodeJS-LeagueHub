@@ -1,9 +1,9 @@
-const { campeonatos } = require("../../controllers/campeonato.controller");
+const campeonatoService = require("../../services/campeonato.service");
 
 module.exports = (req, res, next) => {
   const id = +(req.params.id || req.params.campeonatoId);
 
-  const campeonato = campeonatos.find((c) => c.id === id);
+  const campeonato = campeonatoService.buscarCampeonatoPorId(id);
 
   if (!campeonato) {
     return res

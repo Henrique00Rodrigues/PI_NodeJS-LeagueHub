@@ -1,11 +1,10 @@
-const { times } = require("../../controllers/time.controller");
+const timeService = require("../../services/time.service");
 
 module.exports = (req, res, next) => {
   const { nome } = req.body;
+  const id = +req.params.id;
 
-  const id = req.params.id;
-
-  const time = times.find((t) => t.id == id);
+  const time = timeService.buscarTimePorId(id);
 
   if (!time) {
     return res.status(404).json({
@@ -13,12 +12,14 @@ module.exports = (req, res, next) => {
     });
   }
 
-  const timeExistente = times.find((t) => t.nome == nome);
+  if (nome) {
+    const timeExistente = timeService.buscarTimePorNome(nome);
 
-  if (timeExistente) {
-    return res.status(409).json({
-      erro: "Já existe um time com esse nome.",
-    });
+    if (timeExistente && timeExistente.id !== time.id) {
+      return res.status(409).json({
+        erro: "Já existe um time com esse nome.",
+      });
+    }
   }
 
   req.time = time;

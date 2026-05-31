@@ -1,39 +1,10 @@
-let jogadores = [];
-let idAtual = 1;
+const jogadorService = require("../services/jogador.service");
 
-class Jogador {
-  constructor(nome, posicao, time) {
-    this.id = idAtual++;
-    this.nome = nome;
-    this.posicao = posicao;
-    this.time = time;
-    this.gols = 0;
-  }
-}
-
-criarJogador = (req, res) => {
-  const dadosJogadores = req.body;
-
-  // verifica se veio array
-  if (!Array.isArray(dadosJogadores)) {
-    return res.status(400).json({
-      mensagem: "Envie um array de jogadores.",
-    });
-  }
-
-  const jogadoresCriados = [];
-
-  for (const dados of dadosJogadores) {
-    const { nome, posicao, time } = dados;
-
-    const jogador = new Jogador(nome, posicao, time);
-
-    jogadores.push(jogador);
-
-    req.timeExistente.jogadores.push(jogador);
-
-    jogadoresCriados.push(jogador);
-  }
+const criarJogador = (req, res) => {
+  const jogadoresCriados = jogadorService.criarJogadores(
+    req.body,
+    req.timeExistente,
+  );
 
   return res.status(201).json({
     mensagem: "Jogadores criados com sucesso.",
@@ -42,27 +13,22 @@ criarJogador = (req, res) => {
   });
 };
 
-editarJogador = (req, res) => {
-  const jogador = req.jogador;
+const editarJogador = (req, res) => {
+  const jogadorEditado = jogadorService.editarJogador(req.jogador, req.body);
 
-  jogador.nome = req.body.nome ?? jogador.nome;
-  jogador.posicao = req.body.posicao ?? jogador.posicao;
-  jogador.gols = req.body.gols ?? jogador.gols;
-
-  return res.json(jogador);
+  return res.json(jogadorEditado);
 };
 
-deleteJogador = (req, res) => {
-  jogadores = jogadores.filter((j) => j.id != req.jogador.id); //está removendo da lista global
-
-  req.timeExistente.jogadores = req.timeExistente.jogadores.filter(
-    (j) => j.id !== req.jogador.id,
-  ); //está removendo do time
+const deleteJogador = (req, res) => {
+  const jogadorRemovido = jogadorService.deletarJogador(
+    req.jogador,
+    req.timeExistente,
+  );
 
   return res.json({
     mensagem: "Jogador removido com sucesso.",
-    jogadorRemovido: req.jogador.nome,
+    jogadorRemovido: jogadorRemovido.nome,
   });
 };
 
-module.exports = { jogadores, criarJogador, editarJogador, deleteJogador };
+module.exports = { criarJogador, editarJogador, deleteJogador };

@@ -1,8 +1,4 @@
-const { times } = require("../../controllers/time.controller");
-
-function nomeJaExiste(nome) {
-  return times.find((t) => t.nome.toLowerCase() === nome.toLowerCase());
-}
+const timeService = require("../../services/time.service");
 
 module.exports = (req, res, next) => {
   const { nome } = req.body;
@@ -13,9 +9,9 @@ module.exports = (req, res, next) => {
     });
   }
 
-  const timeExistente = times.find((t) => t.nome == nome);
+  const timeExistente = timeService.buscarTimePorNome(nome);
 
-  if (nomeJaExiste(nome)) {
+  if (timeExistente) {
     return res.status(409).json({
       erro: "Já existe um time com esse nome.",
     });

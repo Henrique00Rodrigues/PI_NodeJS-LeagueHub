@@ -1,36 +1,23 @@
-let times = [];
-let idAtual = 1;
+const timeService = require("../services/time.service");
 
-class Time {
-  constructor(nome, status = "A decidir...") {
-    this.id = idAtual++;
-    this.nome = nome;
-    this.jogadores = [];
-    this.status = status;
-  }
-}
-
-listarTimes = (req, res) => {
-  res.json(times);
+const listarTimes = (req, res) => {
+  return res.json(timeService.listarTimes());
 };
 
-criarTime = (req, res) => {
+const criarTime = (req, res) => {
   const { nome } = req.body;
 
-  const time = new Time(nome);
+  const time = timeService.criarTime(nome);
 
-  times.push(time);
+  // times.push(time);
 
   return res.status(201).json({ time });
 };
 
-editarTime = (req, res) => {
-  const time = req.time;
+const editarTime = (req, res) => {
+  const timeEditado = timeService.editarTime(req.time, req.body);
 
-  time.nome = req.body.nome ?? time.nome;
-  time.status = req.body.status ?? time.status;
-
-  return res.json(time);
+  return res.json(timeEditado);
 };
 
-module.exports = { times, listarTimes, criarTime, editarTime };
+module.exports = { listarTimes, criarTime, editarTime };

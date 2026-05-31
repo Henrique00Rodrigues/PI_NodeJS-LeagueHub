@@ -1,11 +1,12 @@
-const { jogadores } = require("../../controllers/jogador.controller");
-const { times } = require("../../controllers/time.controller");
+const jogadorService = require("../../services/jogador.service");
+const timeService = require("../../services/time.service");
 
 module.exports = (req, res, next) => {
   const id = Number(req.params.id);
   const { nome, posicao } = req.body;
 
-  const jogador = jogadores.find((j) => j.id === id);
+  // const jogador = jogadores.find((j) => j.id === id);
+  const jogador = jogadorService.buscarJogadorPorId(id);
 
   if (!jogador) {
     return res.status(404).json({
@@ -13,9 +14,7 @@ module.exports = (req, res, next) => {
     });
   }
 
-  const timeExistente = times.find(
-    (t) => t.nome.toLowerCase() === jogador.time.toLowerCase(),
-  );
+  const timeExistente = timeService.buscarTimePorNome(jogador.time);
 
   if (!timeExistente) {
     return res.status(404).json({

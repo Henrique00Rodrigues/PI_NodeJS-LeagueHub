@@ -1,23 +1,24 @@
-const { times } = require("../../controllers/time.controller");
+// const { times } = require("../../controllers/time.controller");
+const timeService = require("../../services/time.service");
 
 module.exports = (req, res, next) => {
   const jogadores = req.body;
 
-  // verifica se veio array
+  // verifica se veio array dos jogadores
   if (!Array.isArray(jogadores)) {
     return res.status(400).json({
       erro: "Envie um array de jogadores",
     });
   }
 
-  // array vazio
+  // verifica se o arrayy esta vazio
   if (jogadores.length === 0) {
     return res.status(400).json({
       erro: "Envie pelo menos um jogador",
     });
   }
 
-  // precisa ter exatamente 5 jogadores
+  // validacao do numero exato de jogadores
   if (jogadores.length !== 5) {
     return res.status(400).json({
       erro: "O time precisa possuir exatamente 5 jogadores",
@@ -33,10 +34,7 @@ module.exports = (req, res, next) => {
     });
   }
 
-  // verifica se o time existe
-  const timeExistente = times.find(
-    (t) => t.nome.toLowerCase() === nomeTime.toLowerCase(),
-  );
+  const timeExistente = timeService.buscarTimePorNome(nomeTime);
 
   if (!timeExistente) {
     return res.status(404).json({
@@ -108,7 +106,7 @@ module.exports = (req, res, next) => {
     posicoesRecebidas.push(posicao.toLowerCase());
   }
 
-  // garante todas as posições obrigatórias
+  // garante todas as posiçõoes obrigatorias
   const posicoesObrigatorias = [
     "Atacante",
     "Lateral Direito",
@@ -122,13 +120,14 @@ module.exports = (req, res, next) => {
       (j) => j.posicao.toLowerCase() === posicao.toLowerCase(),
     );
 
+    // Está validando se todas as  posicoes do time foram preenchidas
     if (!possuiPosicao) {
       return res.status(400).json({
         erro: `O time precisa possuir um ${posicao}`,
       });
     }
   }
-
+  //Envia o time existente devolta para poder ser usado no controller
   req.timeExistente = timeExistente;
 
   next();
